@@ -11,23 +11,56 @@
     --received-bg: rgba(255, 255, 255, 0.05);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; text-decoration: none; }
-body { background-color: var(--bg-dark); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; justify-content: center; position: relative; }
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Poppins', sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+    text-decoration: none; 
+}
 
-/* Animated Background Shapes */
+body { 
+    background-color: var(--bg-dark); 
+    color: var(--text-main); 
+    width: 100vw;
+    height: 100vh; 
+    overflow: hidden; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; /* Desktop par center rakhne ke liye */
+    margin: 0;
+}
+
+/* Animated Background Shapes (Ishe background me hi rehne dein) */
 .bg-shape { position: absolute; filter: blur(80px); z-index: -1; border-radius: 50%; opacity: 0.5; }
 .shape1 { width: 400px; height: 400px; background: #3b82f6; top: -100px; left: -100px; }
 .shape2 { width: 300px; height: 300px; background: #8b5cf6; bottom: -50px; right: -50px; }
 
-/* Mobile First App Container */
-.app-container { width: 100%; height: 100vh; display: flex; flex-direction: column; position: relative; overflow: hidden; }
-
-/* Desktop optimization */
-@media (min-width: 768px) {
-    body { align-items: center; }
-    .app-container { width: 400px; height: 85vh; border-radius: 24px; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+/* 📱 Mobile First App Container (100% Full Screen) */
+.app-container { 
+    width: 100%; 
+    height: 100%; /* Mobile par pura height cover karega */
+    max-width: 100%;
+    display: flex; 
+    flex-direction: column; 
+    position: relative; 
+    overflow: hidden; 
+    background-color: var(--bg-dark); /* Mobile par glass ki jagah solid background better lagta hai */
 }
 
+/* 💻 Desktop optimization (Sirf 1024px se bade screens ke liye) */
+@media (min-width: 1024px) {
+    .app-container { 
+        width: 400px; 
+        height: 90vh; 
+        border-radius: 24px; 
+        background: var(--glass-bg); 
+        backdrop-filter: blur(20px); 
+        border: 1px solid var(--glass-border); 
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+    }
+}
 /* Typography & General */
 h1.logo { font-size: 1.5rem; font-weight: 700; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 h2 { font-size: 1.1rem; font-weight: 600; color: var(--text-main); }
