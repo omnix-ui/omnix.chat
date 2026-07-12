@@ -1,60 +1,205 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap');
+/* =========================================
+   1. BASE STYLES & VARIABLES
+========================================= */
+:root {
+    --bg-dark: #070913;
+    --primary-blue: #2563eb;
+    --primary-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+    --glass-bg: rgba(20, 25, 40, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
+    --sent-bg: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    --received-bg: rgba(255, 255, 255, 0.05);
+}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    font-family: 'Poppins', sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
 
-body, html {
-    font-family: 'Inter', sans-serif;
-    background: radial-gradient(circle at center, #24243e 0%, #151525 50%, #0f0c29 100%);
-    color: white;
-    min-height: 130vh;
+/* =========================================
+   2. BODY & HTML FIX (Mobile First)
+========================================= */
+html, body {
+    width: 100%;
+    /* 100dvh ek modern fix hai jisse mobile address bar app ko dabata nahi hai */
+    height: 100vh;
+    height: 100dvh; 
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden; /* Body ko scroll hone se rokna */
+    display: block; /* Mobile par flex use nahi karenge taaki squish na ho */
+}
+
+/* Background Animated Shapes */
+.bg-shape { position: absolute; filter: blur(80px); z-index: -1; border-radius: 50%; opacity: 0.5; }
+.shape1 { width: 400px; height: 400px; background: #3b82f6; top: -100px; left: -100px; }
+.shape2 { width: 300px; height: 300px; background: #8b5cf6; bottom: -50px; right: -50px; }
+
+/* =========================================
+   3. APP CONTAINER (Layout Framework)
+========================================= */
+.app-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    background: transparent;
+}
+
+/* Header (Top) aur Nav (Bottom) ko fix rakhna */
+.main-header, .bottom-nav, .chat-header, .chat-input-area {
+    flex-shrink: 0; /* Inko chota hone se rokega */
+}
+
+/* Middle Content Area (Sirf yahi scroll hoga) */
+.users-list-area, .chat-area {
+    flex: 1; /* Beech ki saari bachi hui jagah le lega */
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; /* iOS par smooth scrolling ke liye */
     display: flex;
     flex-direction: column;
 }
 
-/* --- NAVBAR (COMMON) --- */
-.navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
-.navbar .logo { font-size: 22px; font-weight: 900; letter-spacing:2px; color: #ffffff; }
-.nav-links { display: flex; align-items: center; justify-content: flex-end; gap: 15px; }
-.nav-links a { color: #a0a0b0; text-decoration: none; margin-left: 25px; font-size: 15px; font-weight: 400; transition: color 0.3s ease; cursor: pointer; }
-.nav-links a:hover { color: #ffffff; }
-.nav-links .signup-link { color: #ffffff; }
-.nav-links .action-btn { padding: 6px 14px; font-size: 14px; height: auto; border-radius: 6px; }
+/* =========================================
+   4. DESKTOP OPTIMIZATION (PC View)
+========================================= */
+@media (min-width: 1024px) {
+    body {
+        display: flex; /* PC par wapas center mein laane ke liye */
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .app-container {
+        width: 400px; /* PC par ek phone jaisi screen banayega */
+        height: 90vh;
+        max-height: 850px;
+        border-radius: 24px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        overflow: hidden; /* Border-radius ke bahar elements na niklein */
+    }
+}
 
-/* --- HERO / MAIN SECTION (COMMON TYPOGRAPHY) --- */
-.hero { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
-.welcome-text { font-size: 14px; letter-spacing: 6px; color: #8c8c9e; margin-bottom: -15px; }
-.main-title { font-size: 15vm; font-weight: 900; line-height: 1.1; margin: 20px 0; letter-spacing: -2px; background: linear-gradient(to right, #ffffff 10%, #a2e8f8 40%, #00b4db 70%, #005bea 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.tagline { font-size: 20px; color: #8c8c9e; font-weight: 300; margin-bottom: 50px; letter-spacing: 1px; }
-.action-btn { background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; padding: 14px 60px; border-radius: 40px; font-size: 16px; font-weight: 400; cursor: pointer; transition: all 0.3s ease; }
-.action-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.4); }
+/* =========================================
+   5. COMPONENT STYLES (Header, Nav, Buttons)
+========================================= */
+.main-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
+h1.logo { font-size: 1.5rem; font-weight: 700; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.header-actions { display: flex; gap: 5px; }
 
-/* --- FOOTER (COMMON) --- */
-.footer { padding: 30px 20px; text-align: center; background: transparent; }
-.footer-features { color: #a2e8f8; font-weight: 600; margin-bottom: 15px; font-size: 14px; letter-spacing: 1px; }
-.footer-features span { margin: 0 10px; }
-.footer-links { margin-bottom: 5px; }
-.footer-links a { color: #707080; text-decoration: none; margin: 0 15px; font-size: 13px; transition: color 0.3s ease; }
-.footer-links a:hover { color: #ffffff; }
-.footer-copy { color: #505060; font-size: 12px; }
+.bottom-nav { display: flex; justify-content: space-around; padding: 10px 0; background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; border: none; background: transparent; transition: 0.2s; }
+.nav-item span { font-size: 0.7rem; }
+.nav-item.active { color: var(--primary-blue); }
 
-/* --- PRE-LOADER (COMMON) --- */
-#preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #0f0f0f; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
-.loader-logo { font-size: 2rem; font-weight: bold; color: white; letter-spacing: 5px; margin-bottom: 20px; animation: pulse 1.5s infinite; }
-.loader-spinner { width: 40px; height: 40px; border: 4px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #fff; border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+button { cursor: pointer; border: none; background: transparent; color: var(--text-main); transition: 0.2s; outline: none; }
+.icon-btn { font-size: 1.2rem; padding: 10px; color: var(--text-main); }
+a { text-decoration: none; color: inherit; }
 
-/* --- THEME TOGGLE & LIGHT MODE (COMMON) --- */
-.theme-btn { background: none; border: none; font-size: 22px; cursor: pointer; margin-right: 15px; transition: transform 0.3s ease; }
-.theme-btn:active { transform: scale(0.8); }
+/* =========================================
+   6. USER LIST (Page 1)
+========================================= */
+.user-card { display: flex; align-items: center; gap: 15px; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
+.user-card:hover { background: rgba(255,255,255,0.05); }
+.avatar-wrapper { position: relative; }
+.avatar-text { background: linear-gradient(135deg, #10b981, #059669); color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem; font-weight: 600; }
+.status { position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--bg-dark); }
+.status.online { background: #10b981; }
+.status.offline { background: #64748b; }
+.user-info { flex: 1; }
+.name-row, .msg-row { display: flex; justify-content: space-between; align-items: center; }
+.name-row h2 { font-size: 1.1rem; font-weight: 600; }
+.time { font-size: 0.75rem; color: var(--text-muted); }
+.msg-row p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; color: #cbd5e1; font-size: 0.85rem; margin-top: 5px; }
 
-body.light-mode { background-color: #f0f2f5; color: #1a1a1a; }
-body.light-mode .navbar, body.light-mode .footer, body.light-mode .glass-panel { background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(0, 0, 0, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1); color: #1a1a1a; }
-body.light-mode input { background: #ffffff; color: #1a1a1a; border: 1px solid #cccccc; }
-body.light-mode .main-title { color: #1a1a1a; }
-body.light-mode .hero { background: #f0f2f5; }
-body.light-mode .logo, body.light-mode .nav-links a { color: #1a1a1a; }
-body.light-mode .welcome-text, body.light-mode .tagline { color: #333333; }
-body.light-mode .footer-features, body.light-mode .footer-features span, body.light-mode .footer-links a, body.light-mode .footer-copy { color: #444444; }
-body.light-mode .action-btn { background: transparent; border: 2px solid #1a1a1a; color: #1a1a1a; }
-body.light-mode .action-btn:hover { background: #1a1a1a; color: #ffffff; }
+/* =========================================
+   7. CHAT AREA (Page 2)
+========================================= */
+.chat-header { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
+.chat-user-info { display: flex; align-items: center; gap: 10px; }
+.chat-user-info h2 { font-size: 1.1rem; }
+.typing-indicator { color: var(--primary-blue); font-size: 0.8rem; }
+
+.messages { padding: 20px; display: flex; flex-direction: column; gap: 15px; flex: 1; }
+.message { max-width: 80%; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.message.received { align-self: flex-start; }
+.message.sent { align-self: flex-end; }
+.msg-content { padding: 12px 16px; font-size: 0.95rem; line-height: 1.4; color: #fff; }
+.message.received .msg-content { background: var(--received-bg); border-radius: 0px 20px 20px 20px; border: 1px solid var(--glass-border); }
+.message.sent .msg-content { background: var(--sent-bg); border-radius: 20px 0px 20px 20px; }
+.msg-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 5px; }
+.message.received .msg-time { text-align: left; }
+.message.sent .msg-time { text-align: right; }
+
+.chat-input-area { padding: 10px 15px; display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass-border); }
+.input-wrapper { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 25px; padding: 0 15px; display: flex; align-items: center; }
+.input-wrapper input { width: 100%; background: transparent; border: none; padding: 12px 0; color: white; outline: none; }
+.send-btn { background: var(--primary-gradient); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+
+/* --- PAGE 1: Chat List --- */
+.main-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
+.header-actions { display: flex; gap: 5px; }
+
+.users-list-area { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.user-card { display: flex; align-items: center; gap: 15px; padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; }
+.user-card:hover, .user-card:active { background: rgba(255,255,255,0.05); }
+
+.avatar-wrapper { position: relative; }
+.avatar-text { background: linear-gradient(135deg, #10b981, #059669); color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%; width: 50px; height: 50px; font-size: 1.2rem; font-weight: 600; }
+.status { position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--bg-dark); }
+.status.online { background: #10b981; }
+.status.offline { background: #64748b; }
+
+.user-info { flex: 1; }
+.name-row, .msg-row { display: flex; justify-content: space-between; align-items: center; }
+.time { font-size: 0.75rem; color: var(--text-muted); }
+.msg-row p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; color: #cbd5e1; }
+.badge { background: var(--primary-blue); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+
+.bottom-nav { display: flex; justify-content: space-around; padding: 10px 0; background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--text-muted); font-size: 1.2rem; }
+.nav-item span { font-size: 0.7rem; }
+.nav-item.active { color: var(--primary-blue); }
+
+/* --- PAGE 2: Chat Area --- */
+.chat-area { flex: 1; display: flex; flex-direction: column; height: 100%; position: relative; }
+.chat-header { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
+.chat-user-info { display: flex; align-items: center; gap: 10px; }
+.back-btn { padding-right: 5px; }
+
+.messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+.message { max-width: 80%; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.message.received { align-self: flex-start; }
+.message.sent { align-self: flex-end; }
+.msg-content { padding: 12px 16px; font-size: 0.95rem; line-height: 1.4; color: #fff; }
+.message.received .msg-content { background: var(--received-bg); border-radius: 0px 20px 20px 20px; border: 1px solid var(--glass-border); }
+.message.sent .msg-content { background: var(--sent-bg); border-radius: 20px 0px 20px 20px; }
+.msg-time { font-size: 0.7rem; color: var(--text-muted); margin-top: 5px; }
+.message.received .msg-time { text-align: left; }
+.message.sent .msg-time { text-align: right; }
+.read { color: #60a5fa; margin-left: 4px; }
+
+.chat-input-area { padding: 10px 15px; display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass-border); }
+.input-wrapper { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 25px; padding: 0 15px; display: flex; align-items: center; }
+.input-wrapper input { width: 100%; background: transparent; border: none; padding: 12px 0; color: white; outline: none; }
+.send-btn { background: var(--primary-gradient); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+
+/* Slide-in Profile Panel */
+.profile-panel { position: absolute; top: 0; right: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 100; transform: translateX(100%); transition: transform 0.3s ease; display: flex; flex-direction: column; }
+.profile-panel.active { transform: translateX(0); }
+.profile-header { padding: 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--glass-border); }
+.profile-details { text-align: center; padding: 30px; }
+.large-avatar { width: 100px; height: 100px; font-size: 2.5rem; margin: 0 auto 15px auto; background: var(--primary-gradient); color: white; display: flex; justify-content: center; align-items: center; border-radius: 50%; }
