@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OMNIX - Chats</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+
+    <div class="app-container glass-panel">
+        <header class="main-header">
+            <div class="brand">
+                <h1 class="logo">OMNIX</h1>
+            </div>
+            <div class="header-actions">
+                <button class="icon-btn"><i class="fas fa-search"></i></button>
+                <button class="icon-btn"><i class="fas fa-ellipsis-v"></i></button>
+            </div>
+        </header>
+
+        <!-- Yahan par Supabase ke through JavaScript se users load honge -->
+        <main class="users-list-area" id="usersListContainer">
+            <!-- Data dynamically yahan inject hoga -->
+        </main>
+        
+        <nav class="bottom-nav">
+            <button class="nav-item active"><i class="fas fa-comment-alt"></i><span>Chats</span></button>
+            <button class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></button>
+        </nav>
+    </div>
+</body>
+</html>
+
