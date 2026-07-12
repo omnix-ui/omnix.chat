@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OMNIX - Chat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+
+    <div class="app-container glass-panel">
+        
+        <main class="chat-area">
+            <header class="chat-header">
+                <div class="chat-user-info">
+                    <a href="index.html" class="icon-btn back-btn"><i class="fas fa-arrow-left"></i></a>
+                    <div class="avatar-wrapper">
+                        <!-- JS yahan profile ka pehla letter daalega -->
+                        <div class="avatar-text" id="chatHeaderAvatar"></div>
+                    </div>
+                    <div class="user-details">
+                        <!-- JS yahan naam aur status daalega -->
+                        <h2 id="chatHeaderName"></h2>
+                        <p class="typing-indicator" id="chatHeaderStatus"></p>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="icon-btn" id="toggleProfile"><i class="fas fa-ellipsis-v"></i></button>
+                </div>
+            </header>
+
+            <!-- Yahan Supabase se aaye hue messages load honge -->
+            <div class="messages" id="chatMessages">
+                <!-- Messages JS ke through aayenge -->
+            </div>
+
+            <footer class="chat-input-area">
+                <button class="icon-btn action-icon"><i class="far fa-smile"></i></button>
+                <div class="input-wrapper">
+                    <input type="text" id="messageInput" placeholder="Message..." autocomplete="off">
+                </div>
+                <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+            </footer>
+        </main>
+
+        <aside class="profile-panel glass-panel" id="profilePanel">
+            <div class="profile-header">
+                <button class="icon-btn" id="closeProfile"><i class="fas fa-times"></i></button>
+                <h3>Contact Info</h3>
+            </div>
+            <div class="profile-scroll">
+                <div class="profile-details">
+                    <!-- JS yahan profile details update karega -->
+                    <div class="large-avatar" id="profileLargeAvatar"></div>
+                    <h2 id="profileName"></h2>
+                    <p class="phone-num" id="profilePhone"></p>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
