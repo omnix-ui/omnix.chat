@@ -216,4 +216,5 @@ function renderSingleMessage(msg, isSentByMe) {
 
 const supabaseUrl = 'https://otbyobzvuomysphfgmym.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90YnlvYnp2dW9teXNwaGZnbXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2Nzk5MTMsImV4cCI6MjA5OTI1NTkxM30.UKLCLo3TrlTNAVv2-dl_m8w8YdudALZO05_R5iEKd64';
-  
+
+
