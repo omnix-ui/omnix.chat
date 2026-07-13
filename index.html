@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OMNIX - Chats</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,22 +20,47 @@
             <div class="brand">
                 <h1 class="logo">OMNIX</h1>
             </div>
-            <div class="header-actions">
+            <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+                
+                <div class="avatar-wrapper" style="width: 35px; height: 35px; cursor: pointer;" id="myProfileBtn">
+                    <div class="avatar-text" id="myAvatarText" style="font-size: 1rem; width: 100%; height: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">U</div>
+                </div>
+
                 <button class="icon-btn"><i class="fas fa-search"></i></button>
                 <button class="icon-btn"><i class="fas fa-ellipsis-v"></i></button>
             </div>
         </header>
 
-        <!-- Yahan par Supabase ke through JavaScript se users load honge -->
         <main class="users-list-area" id="usersListContainer">
-            <!-- Data dynamically yahan inject hoga -->
-        </main>
+            </main>
         
         <nav class="bottom-nav">
             <button class="nav-item active"><i class="fas fa-comment-alt"></i><span>Chats</span></button>
-            <button class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></button>
+            <button class="nav-item" id="settingsBtn"><i class="fas fa-cog"></i><span>Settings</span></button>
         </nav>
+
+        <aside class="profile-panel glass-panel" id="settingsPanel">
+            <div class="profile-header">
+                <button class="icon-btn" id="closeSettings"><i class="fas fa-arrow-left"></i></button>
+                <h3>Settings</h3>
+            </div>
+            <div class="profile-scroll">
+                <div class="profile-details">
+                    <div class="large-avatar" id="myLargeAvatar">U</div>
+                    <h2 id="mySettingsName">Loading...</h2>
+                    <p class="phone-num" id="mySettingsEmail"></p>
+                </div>
+                
+                <div class="profile-actions" style="margin-top: 40px; padding: 0 20px;">
+                    <button id="logoutBtn" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); width: 100%; padding: 15px; border-radius: 15px; font-size: 1.1rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </aside>
+
     </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
-
