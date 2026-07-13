@@ -48,23 +48,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
-// ==========================================
-// PAGE 1: INDEX.HTML FUNCTIONS (User List & Profile)
-// ==========================================
 async function loadChatUsers() {
-    // ----------------------------------------------------
-    // NEW: Logged-in User ki Profile aur Settings ka logic
-    // ----------------------------------------------------
+    // 1. Profile aur Settings ka Setup
     const myName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.username || "User";
     const myInitial = myName.charAt(0).toUpperCase();
 
-    // A. Header mein Avatar set karna
     const myAvatarText = document.getElementById('myAvatarText');
-    if (myAvatarText) {
-        myAvatarText.textContent = myInitial;
-    }
+    if (myAvatarText) myAvatarText.textContent = myInitial;
 
-    // B. Settings Panel Setup
     const settingsBtn = document.getElementById('settingsBtn');
     const myProfileBtn = document.getElementById('myProfileBtn');
     const settingsPanel = document.getElementById('settingsPanel');
@@ -73,32 +64,91 @@ async function loadChatUsers() {
 
     if (settingsPanel) {
         const openSettings = () => {
-            // Panel me user detail daalna
             document.getElementById('mySettingsName').textContent = myName;
             document.getElementById('myLargeAvatar').textContent = myInitial;
             document.getElementById('mySettingsEmail').textContent = currentUser.email || "";
-            settingsPanel.classList.add('active'); // Panel open
+            settingsPanel.classList.add('active');
         };
 
         if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
         if (myProfileBtn) myProfileBtn.addEventListener('click', openSettings);
+        if (closeSettings) closeSettings.addEventListener('click', () => settingsPanel.classList.remove('active'));
         
-        if (closeSettings) {
-            closeSettings.addEventListener('click', () => {
-                settingsPanel.classList.remove('active'); // Panel close
-            });
-        }
-
-        // C. Logout Button Logic
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async () => {
-                const { error } = await supabase.auth.signOut();
-                if (!error) {
-                    window.location.href = "https://omnix-ui.github.io/OMNIX/"; // Wapas Website 1 par
-                }
+                await supabase.auth.signOut();
+                window.location.href = "https://omnix-ui.github.io/OMNIX/"; 
             });
         }
     }
+
+    // ==========================================
+    // 2. DEBUGGING SYSTEM (Screen par error dikhane ke liye)
+    // ==========================================
+    const container = document.getElementById('usersListContainer');
+    
+    // Screen par ek loading text dikhayega pehle
+    container.innerHTML = '<p style="color: #94a3b8; text-align: center; padding: 20px; font-size: 1.2rem;">Fetching users... Please wait.</p>';
+
+    try {
+        // Database se fetch karna
+        const { data: users, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .neq('id', currentUser.id);
+
+        // AGAR SUPABASE SE KOI ERROR AAYA:
+        if (error) {
+            container.innerHTML = `
+                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 20px; margin: 20px; border-radius: 10px; text-align: center;">
+                    <b>Database Error:</b><br><br>${error.message}
+                </div>`;
+            return;
+        }
+
+        // AGAR DATA KHALI AAYA:
+        if (!users || users.length === 0) {
+            container.innerHTML = `
+                <div style="background: rgba(234, 179, 8, 0.1); border: 1px solid #eab308; color: #eab308; padding: 20px; margin: 20px; border-radius: 10px; text-align: center;">
+                    Database connected, but no other users found. (Total users = 1)
+                </div>`;
+            return;
+        }
+
+        // AGAR SAB KUCH SAHI RAHA (Users Render honge):
+        container.innerHTML = ''; // Loading text hatao
+        
+        users.forEach(user => {
+            const name = user.full_name || user.username || "User";
+            const initial = name.charAt(0).toUpperCase();
+
+            const userHTML = `
+                <a href="chat.html?userId=${user.id}" class="user-card">
+                    <div class="avatar-wrapper">
+                        <div class="avatar-text">${initial}</div>
+                    </div>
+                    <div class="user-info">
+                        <div class="name-row">
+                            <h2>${name}</h2>
+                        </div>
+                        <div class="msg-row">
+                            <p>Click to chat...</p>
+                        </div>
+                    </div>
+                </a>
+            `;
+            container.innerHTML += userHTML;
+        });
+
+    } catch (err) {
+        // AGAR JAVASCRIPT MEIN KOI CRASH HUA:
+        container.innerHTML = `
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 20px; margin: 20px; border-radius: 10px; text-align: center;">
+                <b>Code Crash Error:</b><br><br>${err.message}
+            </div>`;
+    }
+}
+
     // ----------------------------------------------------
 
     // --- Purana Chat Users laane ka code ---
@@ -138,8 +188,6 @@ async function loadChatUsers() {
         `;
         container.innerHTML += userHTML;
     });
-}
-
 // ==========================================
 // PAGE 2: CHAT.HTML FUNCTIONS (Messaging)
 // ==========================================
@@ -262,4 +310,5 @@ function renderSingleMessage(msg, isSentByMe) {
     
     chatContainer.appendChild(msgDiv);
     chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' }); // Scroll to bottom
-}
+                                        }
+        
