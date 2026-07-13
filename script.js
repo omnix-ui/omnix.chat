@@ -1,4 +1,4 @@
-// 1. SUPABASE INITIALIZE KAREIN (Apni keys yahan daalein)
+// 1. SUPABASE INITIALIZE KAREIN
 const supabaseUrl = 'https://otbyobzvuomysphfgmym.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90YnlvYnp2dW9teXNwaGZnbXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2Nzk5MTMsImV4cCI6MjA5OTI1NTkxM30.UKLCLo3TrlTNAVv2-dl_m8w8YdudALZO05_R5iEKd64';
 
@@ -49,9 +49,59 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 // ==========================================
-// PAGE 1: INDEX.HTML FUNCTIONS (User List)
+// PAGE 1: INDEX.HTML FUNCTIONS (User List & Profile)
 // ==========================================
 async function loadChatUsers() {
+    // ----------------------------------------------------
+    // NEW: Logged-in User ki Profile aur Settings ka logic
+    // ----------------------------------------------------
+    const myName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.username || "User";
+    const myInitial = myName.charAt(0).toUpperCase();
+
+    // A. Header mein Avatar set karna
+    const myAvatarText = document.getElementById('myAvatarText');
+    if (myAvatarText) {
+        myAvatarText.textContent = myInitial;
+    }
+
+    // B. Settings Panel Setup
+    const settingsBtn = document.getElementById('settingsBtn');
+    const myProfileBtn = document.getElementById('myProfileBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const closeSettings = document.getElementById('closeSettings');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    if (settingsPanel) {
+        const openSettings = () => {
+            // Panel me user detail daalna
+            document.getElementById('mySettingsName').textContent = myName;
+            document.getElementById('myLargeAvatar').textContent = myInitial;
+            document.getElementById('mySettingsEmail').textContent = currentUser.email || "";
+            settingsPanel.classList.add('active'); // Panel open
+        };
+
+        if (settingsBtn) settingsBtn.addEventListener('click', openSettings);
+        if (myProfileBtn) myProfileBtn.addEventListener('click', openSettings);
+        
+        if (closeSettings) {
+            closeSettings.addEventListener('click', () => {
+                settingsPanel.classList.remove('active'); // Panel close
+            });
+        }
+
+        // C. Logout Button Logic
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                    window.location.href = "https://omnix-ui.github.io/OMNIX/"; // Wapas Website 1 par
+                }
+            });
+        }
+    }
+    // ----------------------------------------------------
+
+    // --- Purana Chat Users laane ka code ---
     const container = document.getElementById('usersListContainer');
     
     // Profiles table se sabhi users laao (Khud ko chhod kar)
@@ -213,8 +263,3 @@ function renderSingleMessage(msg, isSentByMe) {
     chatContainer.appendChild(msgDiv);
     chatContainer.scrollTo({ top: chatContainer.scrollHeight, behavior: 'smooth' }); // Scroll to bottom
 }
-
-const supabaseUrl = 'https://otbyobzvuomysphfgmym.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90YnlvYnp2dW9teXNwaGZnbXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2Nzk5MTMsImV4cCI6MjA5OTI1NTkxM30.UKLCLo3TrlTNAVv2-dl_m8w8YdudALZO05_R5iEKd64';
-
-
